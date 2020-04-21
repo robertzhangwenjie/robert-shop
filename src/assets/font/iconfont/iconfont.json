@@ -1,0 +1,23 @@
+{
+  "id": "1769384",
+  "name": "myIcon",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1048868",
+      "name": "密码成功",
+      "font_class": "icon_password_yes",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "10281814",
+      "name": "账号",
+      "font_class": "zhanghao1",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    }
+  ]
+}
