@@ -1,6 +1,16 @@
+/*
+ * @Author: robert zhang
+ * @Date: 2020-04-22 07:16:08
+ * @LastEditTime: 2020-04-22 22:59:15
+ * @LastEditors: robert zhang
+ * @Description: 
+ * @
+ */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '@/components/Login.vue'
+
+// 导入模块路由
 import home from '@/router/home'
 Vue.use(VueRouter)
 
