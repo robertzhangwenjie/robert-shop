@@ -12,16 +12,17 @@
         :model="loginForm"
         :rules="loginFormRules"
         label-width="80px"
+        @keyup.enter.native="login"
       >
         <!-- 用户名 -->
         <el-form-item label="账号" prop="username">
-          <el-input v-model="loginForm.username">
+          <el-input v-model="loginForm.username" v-focus>
             <i slot="prefix" class="iconfont icon-zhanghao1"></i>
           </el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item label="密码" prop="password">
-          <el-input v-model="loginForm.password" type="password">
+          <el-input v-model="loginForm.password" type="password"  >
             <i slot="prefix" class="iconfont icon-icon_password_yes"></i>
           </el-input>
         </el-form-item>
@@ -143,7 +144,7 @@ export default {
       transform: translate(-50%, -50%);
       border: 1px solid #eee;
       border-radius: 50%;
-      padding: 5px;
+      padding: 2px;
       background-color: #fff;
       img {
         height: 100%;
