@@ -1,3 +1,11 @@
+/*
+ * @Author: robert zhang
+ * @Date: 2020-04-23 06:53:58
+ * @LastEditTime: 2020-04-23 12:33:10
+ * @LastEditors: robert zhang
+ * @Description: 
+ * @
+ */
 import Vue from 'vue'
 import {
   Button,
@@ -17,9 +25,29 @@ import {
   Submenu,
   Radio,
   RadioButton,
-  RadioGroup
+  RadioGroup,
+  Breadcrumb,
+  BreadcrumbItem,
+  Card,
+  Row,
+  Col,
+  Table,
+  TableColumn,
+  Switch,
+  Tooltip,
+  Pagination
 } from 'element-ui'
 
+Vue.use(Pagination)
+Vue.use(Table)
+Vue.use(Switch)
+Vue.use(Tooltip)
+Vue.use(TableColumn)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Card)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
