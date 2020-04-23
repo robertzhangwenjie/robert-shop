@@ -1,7 +1,7 @@
 <!--
  * @Author: robert zhang
  * @Date: 2020-04-22 22:48:22
- * @LastEditTime: 2020-04-23 13:41:48
+ * @LastEditTime: 2020-04-23 23:48:14
  * @LastEditors: robert zhang
  * @Description: 用户列表页
  * @
@@ -23,8 +23,14 @@
         <div slot="header" class="clearfix">
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-input placeholder="请输入搜索内容">
-                <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-input
+                placeholder="请输入搜索内容"
+                v-model="queryInfo.query"
+                @keyup.enter.native="getUserList"
+                @clear="getUserList"
+                clearable
+              >
+                <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
               </el-input>
             </el-col>
             <el-col :span="4">
@@ -42,7 +48,11 @@
           <el-table-column label="状态">
             <!-- 自定义状态显示模板列 -->
             <template slot-scope="tableData">
-              <el-switch v-model="tableData.row.mg_state" active-color="#13ce66"></el-switch>
+              <el-switch
+                v-model="tableData.row.mg_state"
+                @change="updateUserState(tableData.row)"
+                active-color="#13ce66"
+              ></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="180px">
@@ -123,6 +133,23 @@ export default {
     this.getUserList()
   },
   methods: {
+    updateUserState(user) {
+      this.$http
+        .put('users/' + user.id + '/state/' + (user.mg_state ? '1' : '0'))
+        .then(({ data: res }) => {
+          if (res.meta.status === 200) {
+            return
+          } else {
+            // 操作失败则重置
+            user.mg_state = !user.mg_state
+            this.$message.error(res.meta.msg)
+          }
+        })
+        .catch(err => {
+          user.mg_state = !user.mg_state
+          console.log(err)
+        })
+    },
     getUserList() {
       this.$http
         .get('users', {
