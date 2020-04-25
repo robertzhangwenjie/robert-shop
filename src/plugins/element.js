@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-23 06:53:58
- * @LastEditTime: 2020-04-23 12:33:10
+ * @LastEditTime: 2020-04-25 11:37:55
  * @LastEditors: robert zhang
  * @Description: 
  * @
@@ -35,9 +35,11 @@ import {
   TableColumn,
   Switch,
   Tooltip,
-  Pagination
+  Pagination,
+  Dialog
 } from 'element-ui'
 
+Vue.use(Dialog)
 Vue.use(Pagination)
 Vue.use(Table)
 Vue.use(Switch)
@@ -66,4 +68,5 @@ Vue.use(RadioButton)
 Vue.use(RadioGroup)
 
 Vue.prototype.$message = Message
-Vue.prototype.$messageBox = MessageBox
+// 挂载消息确认框
+Vue.prototype.$confirm = MessageBox.confirm
