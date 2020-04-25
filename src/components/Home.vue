@@ -89,7 +89,7 @@ export default {
   methods: {
     logout() {
       // 清除token并退出
-      sessionStorage.removeItem('token')
+      sessionStorage.clear()
       this.$router.push({ name: 'login' })
     },
     getMenuList() {
