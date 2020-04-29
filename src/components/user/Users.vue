@@ -1,7 +1,7 @@
 <!--
  * @Author: robert zhang
  * @Date: 2020-04-22 22:48:22
- * @LastEditTime: 2020-04-25 22:11:22
+ * @LastEditTime: 2020-04-29 14:00:43
  * @LastEditors: robert zhang
  * @Description: 用户列表页
  * @
@@ -38,7 +38,6 @@
             </el-col>
           </el-row>
         </div>
-        <!-- 添加用户弹出框 -->
 
         <!-- 主体内容区 -->
         <el-table :data="queryData.users" stripe>
@@ -94,7 +93,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="设置"
+                content="分配角色"
                 placement="top"
                 :enterable="false"
               >
@@ -102,7 +101,7 @@
                   type="warning"
                   icon="el-icon-setting"
                   size="small"
-                  @click="delUser(tableData.row.id)"
+                  @click="allocateRole(tableData.row)"
                 ></el-button>
               </el-tooltip>
             </template>
@@ -185,6 +184,33 @@
         </span>
       </el-dialog>
     </div>
+    <!-- 分配角色对话框 -->
+    <el-dialog
+      title="角色分配"
+      @close="closeRoleAllocateDialog"
+      :visible.sync="allocateRoleDialogVisible"
+      width="50%"
+    >
+      <div class="role-info">
+        <p>当前用户: {{userInfo.username}}</p>
+        <p>当前角色: {{userInfo.role_name}}</p>
+        <p>
+          分配新角色:
+          <el-select v-model="selectedId" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer">
+        <el-button @click="allocateRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -192,6 +218,7 @@
 import validator from '@/commons/validate'
 
 export default {
+  name: 'Users',
   data() {
     return {
       pageSizes: [10, 15, 20],
@@ -203,6 +230,10 @@ export default {
       queryData: {},
       addDialogVisible: false,
       editDialogVisible: false,
+      allocateRoleDialogVisible: false,
+      roleList: [], // 角色列表
+      userInfo: {},
+      selectedId: '',
       userForm: {
         username: '',
         password: '',
@@ -246,6 +277,53 @@ export default {
       this.editUserForm.email = user.email
       this.editUserForm.id = user.id
       this.editDialogVisible = true
+    },
+    getRoleList() {
+      this.$http
+        .get('roles')
+        .then(res => {
+          if (res.data.meta.status === 200) {
+            this.roleList = res.data.data
+          } else {
+            this.$message.error('获取角色列表失败')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.error('网络异常')
+        })
+    },
+    // 关闭角色分配弹出框时时初始化
+    closeRoleAllocateDialog() {
+      this.roleList = []
+      this.getUserList()
+    },
+    // 分配角色
+    allocateRole(user) {
+      this.getRoleList()
+      this.userInfo = user
+      console.log(this.userInfo)
+      this.allocateRoleDialogVisible = true
+    },
+    updateRole() {
+      if (!this.selectedId) {
+        this.$message.warning('请选择变更的角色！')
+        return
+      }
+      this.$http
+        .put(`users/${this.userInfo.id}/role`, { rid: this.selectedId })
+        .then(res => {
+          if (res.data.meta.status === 200) {
+            this.$message.success('更改角色成功')
+          } else {
+            this.$message.error('更改角色失败')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.error('网络超时')
+        })
+      this.allocateRoleDialogVisible = false
     },
     // 根据id删除用户
     delUser(userId) {
