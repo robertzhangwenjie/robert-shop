@@ -1,13 +1,15 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-22 07:16:08
- * @LastEditTime: 2020-04-22 14:33:06
+ * @LastEditTime: 2020-05-01 08:19:14
  * @LastEditors: robert zhang
  * @Description: 路由模块主文件
  */
 import axios from 'axios'
 
-const baseURL = process.env.VUE_APP_URL
+const hostName = window.location.hostname
+const port = process.env.VUE_APP_PORT
+const baseURL = `http://${hostName}:${port}/api/private/v1`
 const request = axios.create({
   baseURL,
   timeOut: 1000 * 12
