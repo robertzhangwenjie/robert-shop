@@ -1,7 +1,7 @@
 <!--
  * @Author: robert zhang
  * @Date: 2020-04-25 22:43:53
- * @LastEditTime: 2020-04-26 10:05:14
+ * @LastEditTime: 2020-05-01 08:38:20
  * @LastEditors: robert zhang
  * @Description: 权限管理页面
  * @
@@ -51,7 +51,7 @@ export default {
         .get('rights/list')
         .then(res => {
           if (res.data.meta.status === 200) {
-            this.rights = res.data.data
+            this.rightsList = res.data.data
           } else {
             this.$message.error(res.data.meta.msg)
           }
