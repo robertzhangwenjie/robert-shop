@@ -101,8 +101,9 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: res.data.meta.msg
+              message: '菜单获取失败'
             })
+            this.logout()
           }
         })
         .catch(err => {

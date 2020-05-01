@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-22 07:16:08
- * @LastEditTime: 2020-04-22 22:59:15
+ * @LastEditTime: 2020-04-26 08:51:33
  * @LastEditors: robert zhang
  * @Description: 
  * @
@@ -15,7 +15,7 @@ import home from '@/router/home'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/login' },
+  { path: '/', redirect: '/home' },
   { path: '/login', component: Login, name: 'login' },
   ...home
 ]

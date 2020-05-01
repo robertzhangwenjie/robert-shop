@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-23 06:53:58
- * @LastEditTime: 2020-04-25 11:37:55
+ * @LastEditTime: 2020-04-29 12:06:19
  * @LastEditors: robert zhang
  * @Description: 
  * @
@@ -36,10 +36,18 @@ import {
   Switch,
   Tooltip,
   Pagination,
-  Dialog
+  Dialog,
+  Tag,
+  Tree,
+  Select,
+  Option
 } from 'element-ui'
 
+Vue.use(Option)
+Vue.use(Select)
 Vue.use(Dialog)
+Vue.use(Tree)
+Vue.use(Tag)
 Vue.use(Pagination)
 Vue.use(Table)
 Vue.use(Switch)
