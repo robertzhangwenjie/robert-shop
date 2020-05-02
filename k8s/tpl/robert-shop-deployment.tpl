@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ${appName}
-        image: ${appName}:${commitId}
+        image: ${imageName}
         ports:
         - name: http
           containerPort: 80
