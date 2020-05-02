@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robert-shop
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: robert-shop
+  template:
+    metadata:
+      app: robert-shop
+    spec:
+      containers:
+      - name: robert-shop
+        image: ${image}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: robert-shop
+  name: robert-shop
+  namespace: default
+spec:
+  ports:
+  - name: web
+    port: 80
+    targetPort: web
+    nodePort: 30080
+  selector:
+    app: robert-shop
+  type: NodePort
+
