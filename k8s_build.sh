@@ -1,7 +1,7 @@
 ###
  # @Author: robert zhang
  # @Date: 2020-05-02 18:26:39
- # @LastEditTime: 2020-05-02 20:55:45
+ # @LastEditTime: 2020-05-03 00:43:14
  # @LastEditors: robert zhang
  # @Description: k8s构建文件
  # @
@@ -20,6 +20,7 @@ tpls=`ls k8s/tpl/*.tpl`
 echo -e "\n替换的模板文件:\n${tpls}"
 
 # 将模板文件字符串化后拼装成一条cat 文件的命令，然后使用bash去执行，自动替换其中的变量
+# 也可以使用envsubst，但是需要使用export把所有变量配置为环境变量
 for fullTplName in ${tpls};do
   tplString=`cat ${fullTplName}`
   tplName=${fullTplName##*/}
@@ -29,6 +30,7 @@ for fullTplName in ${tpls};do
   echo "${mainfestName}.yaml"
 done
 
+# 启动服务
 kubectl apply -f ./k8s
 
 

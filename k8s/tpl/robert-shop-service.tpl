@@ -10,7 +10,7 @@ spec:
   - name: web
     port: 80
     targetPort: web
-    nodePort: 30080
+    nodePort: 30880
   selector:
     app: ${appName}
   type: NodePort
