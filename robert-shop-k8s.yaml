@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: robert-shop
-        image: ${image}
-        imagePullPolicy: IfNotPresent
+        image: ./
         ports:
         - name: http
           containerPort: 80
