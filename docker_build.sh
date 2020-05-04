@@ -1,15 +1,11 @@
 ###
  # @Author: robert zhang
  # @Date: 2020-05-02 18:03:31
- # @LastEditTime: 2020-05-02 21:43:36
+ # @LastEditTime: 2020-05-04 15:22:42
  # @LastEditors: robert zhang
  # @Description: 构建镜像
  # @
  ###
-
-# 安装依赖并构建
- npm install
- npm run build
 
 # 获取当前commitId
 commitId=`git rev-parse --short HEAD`
