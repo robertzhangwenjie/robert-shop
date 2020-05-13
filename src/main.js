@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-22 07:16:08
- * @LastEditTime: 2020-04-22 21:32:25
+ * @LastEditTime: 2020-05-06 11:59:26
  * @LastEditors: robert zhang
  * @Description: 主入口文件
  * @
@@ -10,6 +10,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
+import './plugins/thirdpart'
 // 自定义指令
 import './directive'
 
