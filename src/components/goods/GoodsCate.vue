@@ -1,7 +1,7 @@
 <!--
  * @Author: robert zhang
  * @Date: 2020-05-05 10:17:46
- * @LastEditTime: 2020-05-13 15:30:31
+ * @LastEditTime: 2020-05-14 23:06:22
  * @LastEditors: robert zhang
  * @Description: 商品分类管理页面
  * @
@@ -53,7 +53,7 @@
                 icon="el-icon-edit"
               >编辑</el-button>
               <el-button
-                @click="delCate(scope.row)"
+                @click="delCate(scope.row.cat_id)"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -73,6 +73,18 @@
       ></el-pagination>
     </el-card>
 
+    <!-- 编辑分类对话框 -->
+    <el-dialog title="编辑分类" :visible.sync="editCateDialogVisible" @close="closeEditCateDialog">
+      <el-form :model="editForm" :rules="cateFormRule" ref="editForm">
+        <el-form-item label="分类名称" label-width="80px" prop="name">
+          <el-input v-model="editForm.name" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editCateDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateCate">确 定</el-button>
+      </div>
+    </el-dialog>
     <!-- 添加分类对话框 -->
     <el-dialog title="添加分类" :visible.sync="addCateDialogVisible" width="40%" @close="resetCateFrom">
       <el-form :model="cateForm" ref="cateForm" :rules="cateFormRule" label-width="auto">
@@ -137,6 +149,12 @@ export default {
       ],
       // 控制添加分类对话框是否显示
       addCateDialogVisible: false,
+      editCateDialogVisible: false,
+      // 编辑分类表单
+      editForm: {
+        name: '',
+        cat_id: ''
+      },
       // 添加分类表单对象
       cateForm: {
         name: '',
@@ -217,6 +235,71 @@ export default {
       this.$refs.cateForm.resetFields()
       this.cateForm.cat_pid = []
       this.cateForm.cat_ids = []
+    },
+    // 点击编辑分类
+    editCate(cate) {
+      this.editForm.name = cate.cat_name
+      this.editForm.cat_id = cate.cat_id
+      this.editCateDialogVisible = true
+    },
+    // 更新分类
+    updateCate() {
+      this.$refs.editForm.validate(value => {
+        if (value) {
+          this.$http
+            .put(`categories/${this.editForm.cat_id}`, {
+              cat_name: this.editForm.name
+            })
+            .then(res => {
+              if (res.data.meta.status === 200) {
+                this.$message.success('更新分类成功')
+              } else {
+                this.$message.error(res.data.meta.msg)
+              }
+              this.editCateDialogVisible = false
+            })
+            .catch(err => {
+              console.log(err)
+              this.$message.error('网络异常')
+            })
+        }
+      })
+    },
+    // 关闭编辑分类
+    closeEditCateDialog() {
+      this.editForm = {}
+      this.$refs.editForm.resetFields()
+    },
+    // 删除分类
+    delCate(cateId) {
+      this.$confirm('是否删除该分类?', '提示', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http.delete(`categories/${cateId}`).then(res => {
+            if (res.data.meta.status === 200) {
+              this.getCateList()
+
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.meta.msg
+              })
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     // 添加分类
     addCate() {
