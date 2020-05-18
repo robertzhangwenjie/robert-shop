@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-23 06:53:58
- * @LastEditTime: 2020-04-29 12:06:19
+ * @LastEditTime: 2020-05-12 20:45:39
  * @LastEditors: robert zhang
  * @Description: 
  * @
@@ -40,9 +40,11 @@ import {
   Tag,
   Tree,
   Select,
-  Option
+  Option,
+  Cascader
 } from 'element-ui'
 
+Vue.use(Cascader)
 Vue.use(Option)
 Vue.use(Select)
 Vue.use(Dialog)
