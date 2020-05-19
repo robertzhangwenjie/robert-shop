@@ -1,7 +1,7 @@
 <!--
  * @Author: robert zhang
  * @Date: 2020-05-05 10:17:46
- * @LastEditTime: 2020-05-19 07:13:07
+ * @LastEditTime: 2020-05-14 23:06:22
  * @LastEditors: robert zhang
  * @Description: 商品分类管理页面
  * @
@@ -180,7 +180,6 @@ export default {
     this.getCateList()
   },
   methods: {
-    // 获取商品分类
     getCateList() {
       this.$http
         .get('categories', { params: this.queryInfo })
