@@ -1,3 +1,4 @@
+
 FROM nginx:1.18-alpine
 
 LABEL maintainer="Robert <robertzhangwenjie@gmail.com>"

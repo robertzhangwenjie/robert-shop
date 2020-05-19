@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-23 06:53:58
- * @LastEditTime: 2020-05-12 20:45:39
+ * @LastEditTime: 2020-05-19 08:16:18
  * @LastEditors: robert zhang
  * @Description: 
  * @
@@ -41,9 +41,15 @@ import {
   Tree,
   Select,
   Option,
-  Cascader
+  Cascader,
+  Alert,
+  Tabs,
+  TabPane
 } from 'element-ui'
 
+Vue.use(TabPane)
+Vue.use(Tabs)
+Vue.use(Alert)
 Vue.use(Cascader)
 Vue.use(Option)
 Vue.use(Select)
