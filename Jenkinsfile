@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'docker-nodejs'
+    label 'nodejs'
   }
   stages {
     stage('构建') {
