@@ -1,12 +1,12 @@
 pipeline {
-  agent any
+  agent {
+    label 'docker-nodejs'
+  }
   stages {
-    stage('') {
+    stage('构建') {
       steps {
-        sh '''npm install
-npm run build'''
+        sh '''npm install && npm run build'''
       }
     }
-
   }
 }
