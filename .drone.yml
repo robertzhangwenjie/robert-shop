@@ -1,0 +1,25 @@
+---
+  kind: pipeline
+  type: docker
+  name: build
+  
+  steps:
+  - name: build 
+    image: node
+    commands:
+    - npm run build
+  
+  - name: package docker 
+    image: plugins/docker
+    settings:
+      dockerfile: Dockerfile
+      repo: zhangwenjie/robert-shop
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_pasword
+
+    
+
+    
+  
