@@ -1,0 +1,34 @@
+---
+  kind: pipeline
+  type: docker
+  name: build
+
+  trigger:
+    branch:
+    - master
+  
+  steps:
+  - name: build 
+    image: node
+    failure: ignore
+    commands:
+    - npm install
+    - npm run build
+
+  
+  - name: package docker 
+    image: plugins/docker
+    settings:
+      dockerfile: Dockerfile
+      repo: zhangwenjie/robert-shop
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_pasword
+
+
+
+    
+
+    
+  

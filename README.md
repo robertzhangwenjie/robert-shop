@@ -1,6 +1,5 @@
 # robert-shop
-
-### 项目介绍
+[![Build Status](http://drone.robertzwj.com/api/badges/robertzhangwenjie/robert-shop/status.svg)](http://drone.robertzwj.com/robertzhangwenjie/robert-shop)
 
 robert-shop是个人开发的一个小型后台管理系统，采用vue + elementUI开发，后台项目为robert-shop-api，需要同时部署两个项目，并提供了docker和k8s一键部署。
 
