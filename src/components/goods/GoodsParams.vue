@@ -1,7 +1,7 @@
 <!--
  * @Author: robert zhang
  * @Date: 2020-05-18 20:48:48
- * @LastEditTime: 2020-05-31 17:59:05
+ * @LastEditTime: 2020-06-28 09:21:05
  * @LastEditors: robert zhang
  * @Description: 商品参数页面
  * @
@@ -48,7 +48,31 @@
           >添加参数</el-button>
           <!-- 动态参数表格 -->
           <el-table :data="manyTableData" border stripe>
-            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="expand">
+              <template slot-scope="scope">
+                <el-tag
+                  v-for="(item,i) in scope.row.attr_vals"
+                  :key="i"
+                  closable
+                  @close="handleClose(i,scope.row)"
+                >{{item}}</el-tag>
+                <el-input
+                  class="input-new-tag"
+                  v-if="scope.row.inputVisible"
+                  v-model="scope.row.inputValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)"
+                ></el-input>
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showInput(scope.row)"
+                >+ New Tag</el-button>
+              </template>
+            </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column label="参数名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作">
@@ -59,7 +83,12 @@
                   icon="el-icon-edit"
                   @click="editParam(scope.row)"
                 >编辑</el-button>
-                <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+                <el-button
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
+                  @click="delParam(scope.row)"
+                >删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -73,7 +102,33 @@
             @click="addParamDialogVisible = true"
           >添加属性</el-button>
           <el-table :data="onlyTableData" border stripe>
-            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="expand">
+              <el-table-column type="expand">
+                <template slot-scope="scope">
+                  <el-tag
+                    v-for="(item,i) in scope.row.attr_vals"
+                    :key="i"
+                    closable
+                    @close="handleClose(i,scope.row)"
+                  >{{item}}</el-tag>
+                  <el-input
+                    class="input-new-tag"
+                    v-if="scope.row.inputVisible"
+                    v-model="scope.row.inputValue"
+                    ref="saveTagInput"
+                    size="small"
+                    @keyup.enter.native="handleInputConfirm(scope.row)"
+                    @blur="handleInputConfirm(scope.row)"
+                  ></el-input>
+                  <el-button
+                    v-else
+                    class="button-new-tag"
+                    size="small"
+                    @click="showInput(scope.row)"
+                  >+ New Tag</el-button>
+                </template>
+              </el-table-column>
+            </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column label="属性名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作">
@@ -84,7 +139,12 @@
                   icon="el-icon-edit"
                   @click="editParam(scope.row)"
                 >编辑</el-button>
-                <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+                <el-button
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
+                  @click="delParam(scope.row)"
+                >删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -228,6 +288,8 @@ export default {
     handleChange(value) {
       if (value.length !== 3) {
         this.selectedKeys = []
+        this.manyTableData = []
+        this.onlyTableData = []
         return null
       }
       this.getCateAttrs()
@@ -246,7 +308,15 @@ export default {
           })
           .then(res => {
             if (res.data.meta.status === 200) {
+              // 将返回的vals转换为数组
+              for (const item of res.data.data) {
+                item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : []
+                // 控制文本框是否隐藏
+                item.inputVisible = false
+                item.inputValue = ''
+              }
               console.log(res.data.data)
+
               if (this.activeName === 'many') {
                 this.manyTableData = res.data.data
               } else {
@@ -317,6 +387,7 @@ export default {
               if (res.data.meta.status === 200) {
                 this.editParamDialogVisible = false
                 this.$message.success('修改成功')
+                this.getCateAttrs()
               } else {
                 this.$message.error(res.data.meta.msg)
               }
@@ -328,6 +399,79 @@ export default {
         } else {
         }
       })
+    },
+    // 删除参数
+    delParam(paramObj) {
+      this.$confirm('是否永久删除此参数？', '提示', {
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http
+            .delete(
+              `categories/${paramObj.cat_id}/attributes/${paramObj.attr_id}`
+            )
+            .then(res => {
+              if (res.data.meta.status === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+              } else {
+                this.$message.error(res.data.meta.msg)
+              }
+              this.getCateAttrs()
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    // 更新参数
+    saveParam(row) {
+      // 更新属性
+      this.$http
+        .put(`categories/${row.cat_id}/attributes/${row.attr_id}`, {
+          attr_name: row.attr_name,
+          attr_sel: row.attr_sel,
+          attr_vals: row.attr_vals.join(',')
+        })
+        .then(res => {
+          if (res.data.meta.status === 200) {
+            this.$message.success(res.data.meta.msg)
+          } else {
+            this.$message.error(res.data.meta.msg)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // 处理tag关闭,通过index来删除attr_vals数组中的对应的索引项
+    handleClose(index, row) {
+      // 删除对应的索引项
+      row.attr_vals.splice(index, 1)
+      this.saveParam(row)
+    },
+    // 点击新建tag时显示input框
+    showInput(row) {
+      row.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    // 文本框失去焦点或按下enter后触发添加tag
+    handleInputConfirm(row) {
+      if (row.inputValue.trim().length !== 0) {
+        row.attr_vals.push(row.inputValue)
+        this.saveParam(row)
+      }
+      // 失去焦点或者按下enter时，隐藏input然后显示tag
+      row.inputVisible = false
+      // 清空input框的数据
+      row.inputValue = ''
     }
   }
 }
@@ -337,9 +481,22 @@ export default {
 .cat_opt {
   margin: 20px 0;
 }
+
+.el-tag {
+  margin: 5px;
+}
+
 .el-tab-pane {
   .el-button {
     margin-bottom: 14px;
   }
+}
+
+.button-new-tag {
+  margin-left: 10px;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
 }
 </style>

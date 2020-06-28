@@ -1,7 +1,7 @@
 /*
  * @Author: robert zhang
  * @Date: 2020-04-22 07:16:08
- * @LastEditTime: 2020-05-31 18:11:01
+ * @LastEditTime: 2020-06-28 06:52:17
  * @LastEditors: robert zhang
  * @Description: 路由模块主文件
  */
@@ -62,9 +62,9 @@ axios.interceptors.response.use(res => {
   } else {
     err.message = '连接服务器失败!'
   }
-  Message.err({ message: err.message })
+  Message.error({ message: err.message })
   // 请求出错的时候执行Promise.resolve(err) 保证所有的请求无论成功失败都可以在回调中收到通知
-  return Promise.resolve(err)
+  return Promise.reject(err)
 }
 )
 
