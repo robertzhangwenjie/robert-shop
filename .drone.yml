@@ -8,6 +8,7 @@
     image: node
     failure: ignore
     commands:
+    - env
     - npm install
     - npm run build
 
@@ -46,6 +47,16 @@ name: deployment
 type: docker
 
 steps:
+- name: scp deploy file
+  image: appleboy/drone-scp
+  settings:
+    host: www.robertzwj.com
+    username: 
+      from_secret: ssh_username
+    password:
+      from_secret: ssh_password
+    target: /tmp/deploy/${DRONE_REPO_NAME}/
+    source: deploy.sh
 - name: ssh commands
   image: appleboy/drone-ssh
   environment:
@@ -61,6 +72,7 @@ steps:
       from_secret: ssh_password
     port: 22
     script:
+    - cd /tmp/deploy/${DRONE_REPO_NAME}/
     - sh deploy.sh
       
 
