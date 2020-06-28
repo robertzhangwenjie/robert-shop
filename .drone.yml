@@ -21,7 +21,8 @@
         from_secret: docker_username
       password:
         from_secret: docker_pasword
-
+      tags: 
+      - latest
 
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
@@ -39,7 +40,33 @@
       - failure
       - success
 
-    
+---
+kind: pipeline
+name: deployment
+type: docker
+
+steps:
+- name: ssh commands
+  image: appleboy/drone-ssh
+  environment:
+    projectName: robert-shop
+    imageName: zhangwenjie/robert-shop
+    version: latest
+
+  settings:
+    host: www.robertzwj.com
+    username: 
+      from_secret: ssh_username
+    password:
+      from_secret: ssh_password
+    port: 22
+    script:
+    - sh deploy.sh
+      
+
+depends_on:
+- build
+
 
     
   
