@@ -22,8 +22,8 @@
         from_secret: docker_username
       password:
         from_secret: docker_pasword
-      tags: 
-      - latest
+      tags: ${DRONE_COMMIT_SHA:0:8}
+      
 
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
@@ -60,11 +60,6 @@ steps:
 
 - name: ssh to deploy
   image: appleboy/drone-ssh
-  environment:
-    projectName: robert-shop
-    imageName: zhangwenjie/robert-shop
-    version: latest
-
   settings:
     host: www.robertzwj.com
     username: 
@@ -73,10 +68,11 @@ steps:
       from_secret: ssh_password
     port: 22
     script:
+    - env
     - cd /tmp/deploy/${DRONE_REPO_NAME}/
-    - export projectName=${projectName}
-    - export imageName=${imageName}
-    - export version=${version}
+    - export projectName=${DRONE_REPO_NAME}
+    - export imageName=zhangwenjie/${DRONE_REPO_NAME}
+    - export version=${DRONE_COMMIT_SHA:0:8}
     - sh deploy.sh
       
 
