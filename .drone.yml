@@ -40,7 +40,9 @@
       status:
       - failure
       - success
-
+trigger:
+  branch:
+  - master
 ---
 kind: pipeline
 name: deployment
@@ -73,6 +75,7 @@ steps:
       from_secret: ssh_password
     port: 22
     script:
+    - env
     - cd /tmp/deploy/${DRONE_REPO_NAME}/
     - export projectName=${projectName}
     - export imageName=${imageName}
