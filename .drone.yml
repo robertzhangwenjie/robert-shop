@@ -57,7 +57,8 @@ steps:
       from_secret: ssh_password
     target: /tmp/deploy/${DRONE_REPO_NAME}/
     source: deploy.sh
-- name: ssh commands
+
+- name: ssh to deploy
   image: appleboy/drone-ssh
   environment:
     projectName: robert-shop
@@ -73,6 +74,9 @@ steps:
     port: 22
     script:
     - cd /tmp/deploy/${DRONE_REPO_NAME}/
+    - export projectName=${projectName}
+    - export imageName=${imageName}
+    - export version=${version}
     - sh deploy.sh
       
 
