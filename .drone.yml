@@ -40,7 +40,9 @@
       status:
       - failure
       - success
-
+trigger:
+  branch:
+  - master
 ---
 kind: pipeline
 name: deployment
