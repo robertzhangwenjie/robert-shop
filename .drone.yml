@@ -8,7 +8,6 @@
     image: node
     failure: ignore
     commands:
-    - env
     - npm install
     - npm run build
 
@@ -40,9 +39,6 @@
       status:
       - failure
       - success
-trigger:
-  branch:
-  - master
 ---
 kind: pipeline
 name: deployment
