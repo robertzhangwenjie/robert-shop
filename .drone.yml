@@ -46,7 +46,7 @@
       message_color: true
       message_pic: true
       sha_link: true
-      tpl: drone.tpl
+      tpl: drone-build.tpl
     when:
       status:
       - failure
@@ -84,7 +84,22 @@ steps:
     - export imageName=zhangwenjie/${DRONE_REPO_NAME}
     - export version=${DRONE_COMMIT_SHA:0:8}
     - sh deploy.sh
-      
+
+- name: dingtalk
+image: lddsb/drone-dingtalk-message
+settings:
+  token:
+    from_secret: ding_token
+  tips_title: "Deploy Status"
+  type: markdown
+  message_color: true
+  message_pic: true
+  sha_link: true
+  tpl: drone-deploy.tpl
+when:
+  status:
+  - failure
+  - success
 
 depends_on:
 - build
