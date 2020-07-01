@@ -11,6 +11,18 @@
     - npm install
     - npm run build
 
+  - name: code-analysis
+    image: aosapps/drone-sonar-plugin
+    settings:
+      sonar_host: http://sonar.robertzwj.com
+      sonar_token:
+        from_secret: sonar_token
+      sources: src/
+      showProfiling: true
+      level: DEBUG
+      timeout: 20
+      ver: 1.0
+
 
   - name: package docker 
     image: plugins/docker

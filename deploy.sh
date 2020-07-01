@@ -1,7 +1,7 @@
 ###
  # @Author: robert zhang
  # @Date: 2020-06-28 20:15:02
- # @LastEditTime: 2020-06-29 14:39:59
+ # @LastEditTime: 2020-06-29 17:13:12
  # @LastEditors: robert zhang
  # @Description: 部署脚本
  # @
@@ -10,6 +10,7 @@
 #!/bin/bash
 
 set -x
+set -e
 
 echo "Starting deploy."
 
@@ -21,7 +22,7 @@ echo "Removing service" && \
 sudo docker rm ${projectName}
 
 # 拉取新镜像并运行
-sudo docker image ls | grep 
+sudo docker image ls | grep ${imageName}:${version}
 sudo docker rmi ${imageName}:${version}
 sudo docker run -itd --name=${projectName} ${imageName}:${version}
 echo "部署成功"
