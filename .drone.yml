@@ -1,56 +1,56 @@
 ---
-  kind: pipeline
-  type: docker
-  name: build
-  
-  steps:
-  - name: build 
-    image: node
-    failure: ignore
-    commands:
-    - npm install
-    - npm run build
+kind: pipeline
+type: docker
+name: build
 
-  - name: code-analysis
-    image: aosapps/drone-sonar-plugin
-    settings:
-      sonar_host: http://sonar.robertzwj.com
-      sonar_token:
-        from_secret: sonar_token
-      sources: src/
-      showProfiling: true
-      level: DEBUG
-      timeout: 20
-      ver: 1.0
+steps:
+- name: build 
+  image: node
+  failure: ignore
+  commands:
+  - npm install
+  - npm run build
+
+- name: code-analysis
+  image: aosapps/drone-sonar-plugin
+  settings:
+    sonar_host: http://sonar.robertzwj.com
+    sonar_token:
+      from_secret: sonar_token
+    sources: src/
+    showProfiling: true
+    level: DEBUG
+    timeout: 20
+    ver: 1.0
 
 
-  - name: package docker 
-    image: plugins/docker
-    settings:
-      dockerfile: Dockerfile
-      repo: zhangwenjie/robert-shop
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_pasword
-      tags: ${DRONE_COMMIT_SHA:0:8}
-      
+- name: package docker 
+  image: plugins/docker
+  settings:
+    dockerfile: Dockerfile
+    repo: zhangwenjie/robert-shop
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_pasword
+    tags: ${DRONE_COMMIT_SHA:0:8}
+    
 
-  - name: dingtalk
-    image: lddsb/drone-dingtalk-message
-    settings:
-      token:
-        from_secret: ding_token
-      tips_title: "Build Status"
-      type: markdown
-      message_color: true
-      message_pic: true
-      sha_link: true
-      tpl: drone-build.tpl
-    when:
-      status:
-      - failure
-      - success
+- name: dingtalk
+  image: lddsb/drone-dingtalk-message
+  settings:
+    token:
+      from_secret: ding_token
+    tips_title: "Build Status"
+    type: markdown
+    message_color: true
+    message_pic: true
+    sha_link: true
+    tpl: drone-build.tpl
+  when:
+    status:
+    - failure
+    - success
 ---
 kind: pipeline
 name: deployment
