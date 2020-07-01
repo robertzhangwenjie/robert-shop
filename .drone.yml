@@ -86,20 +86,20 @@ steps:
     - sh deploy.sh
 
 - name: dingtalk
-image: lddsb/drone-dingtalk-message
-settings:
-  token:
-    from_secret: ding_token
-  tips_title: "Deploy Status"
-  type: markdown
-  message_color: true
-  message_pic: true
-  sha_link: true
-  tpl: drone-deploy.tpl
-when:
-  status:
-  - failure
-  - success
+  image: lddsb/drone-dingtalk-message
+  settings:
+    token:
+      from_secret: ding_token
+    tips_title: "Deploy Status"
+    type: markdown
+    message_color: true
+    message_pic: true
+    sha_link: true
+    tpl: drone-deploy.tpl
+  when:
+    status:
+    - failure
+    - success
 
 depends_on:
 - build

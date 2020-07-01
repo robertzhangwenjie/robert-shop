@@ -2,7 +2,7 @@
 ![]([TPL_STATUS_PIC])
 <font color=[TPL_STATUS_COLOR]>[TPL_COMMIT_MSG]</font>
 
-Commit Id: [TPL_COMMIT_SHA]([TPL_COMMIT_LINK])
+Commit Id: [[TPL_COMMIT_SHA]]([TPL_COMMIT_LINK])
 
 Commiter: [[TPL_AUTHOR_NAME]([TPL_AUTHOR_EMAIL])](mailto:[TPL_AUTHOR_EMAIL])
 
