@@ -203,4 +203,4 @@ kubectl apply -f ./k8s
   }
   ```
 
-- 
+- drone配置
